@@ -1,11 +1,9 @@
 <script setup>
-defineProps({
-    source: String
-})
+import imgUrl from '../../assets/images/pulsechain/LogoTransparent.png'
 </script>
 
 <template>
-    <img :src="source" class="rounded mx-auto d-block" alt="PulseChain">
+    <img :src="imgUrl" class="rounded mx-auto d-block" alt="Logo">
 </template>
 
 <style scoped>

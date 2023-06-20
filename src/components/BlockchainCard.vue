@@ -3,8 +3,7 @@
 defineProps({
   name: String,
   price: String,
-  owner: String,
-  source: String
+  owner: String
 })
 
 import { ethers } from "ethers";
@@ -14,7 +13,7 @@ import IconBlockchain from "./icons/IconBlockchain.vue";
 
 <template>
     <div class="card text-center">
-        <IconBlockchain :source="source" />
+        <IconBlockchain />
 
         <div class="card-body">
             <h3>{{ name }}</h3>
