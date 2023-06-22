@@ -1,11 +1,6 @@
 <script setup>
 
-defineProps({
-  id: Number,
-  name: String,
-  price: String,
-  owner: String
-})
+import { ref } from 'vue'
 
 import IconBitcoin from "./icons/IconBitcoin.vue"
 import IconPulsechain from "./icons/IconPulsechain.vue"
@@ -17,6 +12,21 @@ import IconAvalanche from "./icons/IconAvalanche.vue"
 import IconSolana from "./icons/IconSolana.vue"
 import IconFantom from "./icons/IconFantom.vue"
 import IconOptimism from "./icons/IconOptimism.vue"
+
+const props = defineProps({
+  id: Number,
+  name: String,
+  price: String,
+  owner: String,
+  switchActive: Boolean
+})
+
+const toggleActive = ref(false)
+
+function toggleOverbidSwitch() {
+    toggleActive.value = !toggleActive.value
+    console.log(toggleActive.value)
+}
 
 </script>
 
@@ -51,9 +61,22 @@ import IconOptimism from "./icons/IconOptimism.vue"
                 </tr>
             </table>
 
-            <div class="row">
-                <div class="col"><button type="button" class="btn btn-primary">Buy</button></div>
-                <div class="col"><button type="button" class="btn btn-primary">Overbid</button></div>
+            <div id="buttonArea">
+                <div v-if="!toggleActive" class="d-flex justify-content-center">
+                    <button id="btnBuy" class="btn btn-primary" type="button">Buy</button>
+                </div>
+
+                <div v-else class="input-group">
+                    <input type="text" class="form-control" placeholder="PLS" aria-label="Overbid Price">
+                    <button class="btn btn-primary" type="button">Overbid</button>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <div style="padding-right: 10px;">Overbid</div>
+                <div class="form-check form-switch">
+                    <input id="flexSwitchCheckChecked" class="form-check-input" type="checkbox" role="switch" @click="toggleOverbidSwitch">
+                </div>                
             </div>
         </div>
     </div>
@@ -70,5 +93,14 @@ import IconOptimism from "./icons/IconOptimism.vue"
 h3 {
     margin-top: -10px;
     margin-bottom: 30px;
+}
+
+#btnBuy {
+    min-width: 80px;
+}
+
+#buttonArea {
+    margin-top: 30px;
+    margin-bottom: 10px;
 }
 </style>
