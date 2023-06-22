@@ -21,7 +21,7 @@ import IconOptimism from "./icons/IconOptimism.vue"
 </script>
 
 <template>
-    <div class="card text-center">
+    <div class="card border-3">
         <IconPulsechain v-if="id == 1" />
         <IconEthereum v-else-if="id == 2" />
         <IconArbitrum v-else-if="id == 3" />
@@ -34,10 +34,22 @@ import IconOptimism from "./icons/IconOptimism.vue"
         <IconBitcoin v-else-if="id == 10" />
 
         <div class="card-body">
-            <h3>{{ name }}</h3>
-            <div>{{ id }}</div>
-            <div>Owner: {{ owner }}</div>
-            <p class="card-text">Price: {{ price }}</p>
+            <h3 class="card-title text-center">{{ name }}</h3>
+
+            <table class="table table-borderless">
+                <tr>
+                    <td>Card</td>
+                    <td>{{ id }}</td>
+                </tr>
+                <tr>
+                    <td>Owner</td>
+                    <td>{{ owner }}</td>
+                </tr>
+                <tr>
+                    <td>Price</td>
+                    <td>{{ price }}</td>
+                </tr>
+            </table>
 
             <div class="row">
                 <div class="col"><button type="button" class="btn btn-primary">Buy</button></div>
@@ -51,5 +63,12 @@ import IconOptimism from "./icons/IconOptimism.vue"
 
 .card {
     padding: 20px 0px;
+    background-color: #30353b;
+    color: #dddddd;
+}
+
+h3 {
+    margin-top: -10px;
+    margin-bottom: 30px;
 }
 </style>

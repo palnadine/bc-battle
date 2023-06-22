@@ -28,4 +28,7 @@ import BlockchainCard from './components/BlockchainCard.vue'
 </template>
 
 <style scoped>
+.container {
+  padding-bottom: 100px;
+}
 </style>

@@ -28,9 +28,17 @@ async function connect() {
     // operations, which will be performed by the private key
     // that MetaMask manages for the user.
     let signer = await provider.getSigner();
-    address.value = signer.address;
+    address.value = formatAddress(signer.address);
     isConnected.value = true
   }
+}
+
+function formatAddress(addr) {
+  let address = addr.slice(0, 6)
+  address += '...'
+  address += addr.slice(addr.length -4, addr.length)
+
+  return address
 }
 
 </script>
@@ -41,6 +49,6 @@ async function connect() {
   </button>
 
   <div v-else>
-    Address <span id="address">{{ address }}</span> 
+    Connected: <span id="address">{{ address }}</span> 
   </div>
 </template>

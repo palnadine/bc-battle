@@ -1,5 +1,5 @@
 <script setup>
-import imgPulse from '../../assets/images/pulsechain/LogoTransparent.png'
+import imgPulse from '../../assets/images/pulsechain/LogoTransparentZoomed.png'
 </script>
 
 <template>
@@ -10,5 +10,6 @@ import imgPulse from '../../assets/images/pulsechain/LogoTransparent.png'
 img {
     height: 80px; 
     width: 80px;
+    padding: 6px;
 }
 </style>
