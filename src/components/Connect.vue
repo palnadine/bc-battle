@@ -2,6 +2,7 @@
 
 import { ref } from 'vue'
 import { ethers } from "ethers";
+import formatter from '@/utilities.js'
 
 let provider;
 const isConnected = ref(false)
@@ -28,23 +29,15 @@ async function connect() {
     // operations, which will be performed by the private key
     // that MetaMask manages for the user.
     let signer = await provider.getSigner();
-    address.value = formatAddress(signer.address);
+    address.value = formatter.formatAddress(signer.address);
     isConnected.value = true
   }
-}
-
-function formatAddress(addr) {
-  let address = addr.slice(0, 6)
-  address += '...'
-  address += addr.slice(addr.length -4, addr.length)
-
-  return address
 }
 
 </script>
 
 <template>
-  <button v-if="!isConnected" type="button" class="btn btn-primary" @click="connect">
+  <button v-if="!isConnected" id="connectBtn" type="button" class="btn btn-primary" @click="connect">
     Connect Wallet
   </button>
 
@@ -52,3 +45,9 @@ function formatAddress(addr) {
     Connected: <span id="address">{{ address }}</span> 
   </div>
 </template>
+
+<style scoped>
+#connectBtn {
+  height: 60px;
+}
+</style>

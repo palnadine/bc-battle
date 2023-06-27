@@ -1,6 +1,8 @@
 <script setup>
 
 import { ref } from 'vue'
+import { onMounted } from 'vue'
+import formatter from '@/utilities.js'
 
 import IconBitcoin from "./icons/IconBitcoin.vue"
 import IconPulsechain from "./icons/IconPulsechain.vue"
@@ -22,10 +24,19 @@ const props = defineProps({
 })
 
 const toggleActive = ref(false)
+const explorerURL = "https://scan.pulsechain.com/address/"
+
+onMounted(() => {
+    document.getElementById(`explorer-${props.id}`).href = explorerURL + props.owner
+})
 
 function toggleOverbidSwitch() {
     toggleActive.value = !toggleActive.value
-    console.log(toggleActive.value)
+    console.log(`Switch state of card ${props.id}: ${toggleActive.value}`)
+}
+
+function buyBtnClick() {
+    console.log(`Clicked card ${props.id}`)
 }
 
 </script>
@@ -48,12 +59,14 @@ function toggleOverbidSwitch() {
 
             <table class="table table-borderless">
                 <tr>
-                    <td>Card</td>
-                    <td>{{ id }}</td>
+                    <td>Timer</td>
+                    <td>{{ id }} min</td>
                 </tr>
                 <tr>
                     <td>Owner</td>
-                    <td>{{ owner }}</td>
+                    <td>
+                        <a :id="`explorer-${id}`" class="link-unstyled" target="_blank">{{ formatter.formatAddress(owner) }}</a>
+                    </td>
                 </tr>
                 <tr>
                     <td>Price</td>
@@ -61,9 +74,9 @@ function toggleOverbidSwitch() {
                 </tr>
             </table>
 
-            <div id="buttonArea">
+            <div class="buttonArea">
                 <div v-if="!toggleActive" class="d-flex justify-content-center">
-                    <button id="btnBuy" class="btn btn-primary" type="button">Buy</button>
+                    <button :id="`btn-buy-${id}`" class="btn btn-primary btn-buy" type="button" @click="buyBtnClick">Buy</button>
                 </div>
 
                 <div v-else class="input-group">
@@ -83,9 +96,14 @@ function toggleOverbidSwitch() {
 </template>
 
 <style scoped>
-
+.link-unstyled, .link-unstyled:link, .link-unstyled:hover {
+    padding: 0px;
+    color: inherit;
+    text-decoration: inherit;
+    background-color: #30353b;
+}
 .card {
-    padding: 20px 0px;
+    padding-top: 16px;
     background-color: #30353b;
     color: #dddddd;
 }
@@ -95,11 +113,11 @@ h3 {
     margin-bottom: 30px;
 }
 
-#btnBuy {
+.btn-buy {
     min-width: 80px;
 }
 
-#buttonArea {
+.buttonArea {
     margin-top: 30px;
     margin-bottom: 10px;
 }
