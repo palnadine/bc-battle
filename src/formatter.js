@@ -8,5 +8,13 @@ exports.formatAddress = (addr) => {
     return address
 };
 
+exports.removeDecimals = (str) => {
+    if (str.includes('.')) {
+        return str.split('.')[0]
+    } else {
+        return str
+    }
+}
+
 
 export default exports

@@ -2,7 +2,8 @@
 
 import { ref } from 'vue'
 import { onMounted } from 'vue'
-import formatter from '@/utilities.js'
+import { ethers } from 'ethers'
+import formatter from '@/formatter.js'
 
 import IconBitcoin from "./icons/IconBitcoin.vue"
 import IconPulsechain from "./icons/IconPulsechain.vue"
@@ -18,25 +19,29 @@ import IconOptimism from "./icons/IconOptimism.vue"
 const props = defineProps({
   id: Number,
   name: String,
-  price: String,
-  owner: String,
-  switchActive: Boolean
+  price: BigInt,
+  owner: String
 })
 
 const toggleActive = ref(false)
+const overbidValue = ref("2")
 const explorerURL = "https://scan.pulsechain.com/address/"
 
 onMounted(() => {
-    document.getElementById(`explorer-${props.id}`).href = explorerURL + props.owner
+    //document.getElementById(`explorer-${props.id}`).href = explorerURL + props.owner
 })
 
 function toggleOverbidSwitch() {
     toggleActive.value = !toggleActive.value
-    console.log(`Switch state of card ${props.id}: ${toggleActive.value}`)
+    //console.log(`Switch state of card ${props.id}: ${toggleActive.value}`)
 }
 
 function buyBtnClick() {
     console.log(`Clicked card ${props.id}`)
+}
+
+function updateOverbidValue(value) {
+    overbidValue.value = value
 }
 
 </script>
@@ -65,23 +70,28 @@ function buyBtnClick() {
                 <tr>
                     <td>Owner</td>
                     <td>
-                        <a :id="`explorer-${id}`" class="link-unstyled" target="_blank">{{ formatter.formatAddress(owner) }}</a>
+                        <a :id="`explorer-${id}`" class="link-unstyled" :href="explorerURL + owner" target="_blank">{{ formatter.formatAddress(owner) }}</a>
                     </td>
                 </tr>
                 <tr>
                     <td>Price</td>
-                    <td>{{ price }}</td>
+                    <td>{{ formatter.removeDecimals(ethers.formatEther(price)) }} PLS</td>
                 </tr>
             </table>
 
             <div class="buttonArea">
                 <div v-if="!toggleActive" class="d-flex justify-content-center">
-                    <button :id="`btn-buy-${id}`" class="btn btn-primary btn-buy" type="button" @click="buyBtnClick">Buy</button>
+                    <button :id="`btn-buy-${id}`" class="btn btn-primary btn-buy" type="button" @click="$emit('buy')">Buy</button>
                 </div>
 
                 <div v-else class="input-group">
-                    <input type="text" class="form-control" placeholder="PLS" aria-label="Overbid Price">
-                    <button class="btn btn-primary" type="button">Overbid</button>
+                    <input type="number" class="form-control" placeholder="PLS" aria-label="Overbid Price"
+                        :step="formatter.removeDecimals(ethers.formatEther(price * 2n))" 
+                        :min="formatter.removeDecimals(ethers.formatEther(price * 2n))" 
+                        :value="overbidValue"
+                        @input="updateOverbidValue($event.currentTarget.value)"
+                    >
+                    <button class="btn btn-primary" type="button" @click="$emit('overbid', props.id, overbidValue)">Overbid</button>
                 </div>
             </div>
 
